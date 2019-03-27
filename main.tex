@@ -1,0 +1,95 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This is the template for submission to MICRO 2019
+% The cls file is modified from 'sig-alternate.cls'
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{sig-alternate}
+\usepackage{mathptmx} % This is Times font
+
+\usepackage{fancyhdr}
+\usepackage[normalem]{ulem}
+\usepackage[hyphens]{url}
+\usepackage[sort,nocompress]{cite}
+\usepackage[final]{microtype}
+\usepackage{flushend}
+% Always include hyperref last
+\usepackage[bookmarks=true,breaklinks=true,letterpaper=true,colorlinks,linkcolor=black,citecolor=blue,urlcolor=black]{hyperref}
+
+% Ensure letter paper
+\pdfpagewidth=8.5in
+\pdfpageheight=11in
+
+%%%%%%%%%%%---SETME-----%%%%%%%%%%%%%
+\newcommand{\microsubmissionnumber}{XXX}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\fancypagestyle{firstpage}{
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0pt}
+  \fancyhead[C]{\vspace{15pt}\normalsize{MICRO 2019 Submission
+      \textbf{\#\microsubmissionnumber} -- Confidential Draft -- Do NOT Distribute!!}} 
+  \fancyfoot[C]{\thepage}
+}
+
+\pagenumbering{arabic}
+
+%%%%%%%%%%%---SETME-----%%%%%%%%%%%%%
+\title{Efficient Pipeline Prefetching Using Address Based Register Sharing} 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\maketitle
+\thispagestyle{firstpage}
+\pagestyle{plain}
+
+
+
+
+\begin{abstract}
+
+
+
+\end{abstract}
+
+
+
+
+\section{Introduction}
+Single thread performance is still imperative in modern applications and CPU architectures need keep improving in this area. Recently, value prediction (VP) has been proposed as a single thread performance improvement technique that tries to guess the value of an instruction input operands which artificially breaks true data dependencies and thus increases instruction level parallelism (ILP).
+
+While promising, this technique comes with the caveat that mispredictions are costly so predicted values are only used when the prediction has a high trust which results in low coverage. Since stores change the values in memory, this further increases mispredictions and decreases trust in the prediction and coverage. Sheikh et al. made the observation that addresses are easier to predict than data, and propose the DLVP technique that predicts the load addresses instead and prefetches the data into the pipeline just in time to be consumed by the dependent instruction(s). This effectively achieves the same zero load-to-use latency of a predicted value but with increased coverage and fewer mispredictions.
+
+While effective this technique also significantly increase accesses to memory since every predicted load address needs access the memory twice, once to prefetch and a second to validate the result in case of coherence or memory ordering violation. Moreover this technique misses one great advantage of having addresses early on in the CPU pipeline, which is the ability to take advantage of temporal and spacial data locality available in memory.
+
+In this work we make the observation that predicting addresses enables us to do more than increase value prediction coverage. By using addresses we're able to validate predictions without having to the re-execute the load instructions, since we can detect memory violations based on addresses alone; and we can detect data temporal reuse naturally and manage it in the register bank, reducing register pressure beyond state of the art register sharing techniques. Since applications also expose a great degree of spacial reuse, by doing data forwarding based on addresses we're able to not only expose more locality than traditional register sharing techniques, but in some cases even more than than the total locality available in the window provided by the load queue.   
+
+
+
+
+
+\section{Background}
+\subsection{Value-prediction}
+\subsection{Register sharing}
+\subsection{SRAM cache layout constraints}
+
+
+\section{Extracting re-use from address predictors}
+Analysis of where DLVP(qualcomm paper) and register-sharing techniques come short
+
+\section{Register file as a cache}
+Our contribution
+
+\section{Spacial reuse}
+Coarse grain tags, to track 128-bit/sub-array-width chunks
+
+\section{Related work}
+
+\section{Conclusion}
+
+
+%%%%%%%%% -- BIB STYLE AND FILE -- %%%%%%%%
+\bibliographystyle{IEEEtranS}
+\bibliography{refs}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
