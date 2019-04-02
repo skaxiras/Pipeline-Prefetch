@@ -1,0 +1,12 @@
+
+*.aux
+
+*.blg
+
+*.log
+
+*.out
+
+*.gz
+
+main.pdf

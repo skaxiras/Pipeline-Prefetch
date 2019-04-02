@@ -58,12 +58,12 @@
 
 
 \begin{abstract}
-Recent load value prediction techniques improve IPC by predicting load addresses and prefetching the data into the pipeline. This achieves the same zero load-to-use latency as an all-instruction value predictor but with simpler CPU components making more feasible to implement in hardware. However, it comes with a great increase in pressure in the physical register file and L1 cache in order to validate predictions. %Register reuse techniques could help mitigate the problem by providing load-to-load forwarding, but as we show in this work, state-of-the art register reuse techniques only take minimal advantage of the reuse potential.
+{\color{red} Recent load value prediction techniques improve IPC by predicting load addresses and prefetching the data into the pipeline. This achieves the same zero load-to-use latency as an all-instruction value predictor but with simpler CPU components making more feasible to implement in hardware. However, it comes with a great increase in pressure in the physical register file and L1 cache in order to validate predictions. %Register reuse techniques could help mitigate the problem by providing load-to-load forwarding, but as we show in this work, state-of-the art register reuse techniques only take minimal advantage of the reuse potential.
 
 In this work, we make two observations: (1) the value predicted address are special and that the validation of most predicted addresses do not require the load to be replayed to validate the prediction, most of the CPU components required to validate the predicted load are already present in the CPU to detect memory ordering violations; and (2) due to having addresses early in the pipeline, we can easily cache, manage and detect data reuse, and perform load-to-load forwarding through the physical register, further decreasing register and cache pressure. %The address prediction components provided by load value predictors solves this issue by making load addresses available at decode and allows for a more effective register reuse detection and forwarding technique since it is based on load addresses, i.e. the same strategy used in any other cache level in the memory hierarchy.
 
 Our proposed address based register reuse technique improves data forwarding through the register file by XX\% on average (up to XX\%) compared to a state-of-the-art register sharing strategy, and reduces L1 accesses by YY\% (up to YY\%) compared to a stand alone load value predictor without losing any performance improvements provided by the same load value predictor. Moreover, the strategy has minimal storage overheard since it leverages the components required by load value predictors and memory ordering violation detection to detect and safely reuse data in the register file.
-
+}
 
 \end{abstract}
 
