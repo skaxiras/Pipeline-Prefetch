@@ -82,13 +82,46 @@ In this work we make the observation that predicting addresses enables us to do 
 Our technique shows an improvement of xx\% bla bla bla.
 
 
-\begin{figure}[ht]
-\centerline{\includegraphics[width=0.50\textwidth]{diagrams/VsTable.pdf}}
-%\captionsetup{justification=centering}
-\caption{Table motivating our work}
-\label{fig:DistVsValue}
-\end{figure}
+%\begin{figure}[ht]
+%\centerline{\includegraphics[width=0.50\textwidth]{diagrams/VsTable.pdf}}
+%%\captionsetup{justification=centering}
+%\caption{Table motivating our work}
+%\label{fig:DistVsValue}
+%\end{figure}
 
+\begin{scriptsize}
+%\begin{table}[h!]
+\begin{table*}[h!]
+  \centering
+  \begin{tabular}{|c|p{20mm}|p{20mm}|p{20mm}|p{20mm}|p{20mm}|p{20mm}|p{20mm}|}
+    \hline
+    \textbf{Strategies} & 
+    \textbf{Prefetch} & 
+    \textbf{Granularity} & 
+    \textbf{To Where?} &
+    \textbf{Load-Load reuse} & 
+    \textbf{Validation} & 
+    \textbf{L1 accesses} & 
+    \textbf{comment}\\
+    \hline
+    
+    \hline
+    DLVP~\cite{} &  \cmark & accessed \newline item  (word) & pipeline & \xmark &  Value-based &  {\color{red} more} &    \\
+    \hline
+    AVPP~\cite{} &  \cmark & block \newline (128 bits) & scratchpad \newline (L0)  & \xmark & Value-based &  {\color{red} more} &   \\
+    \hline
+    ISRB~\cite{} &  \xmark & -- & -- & \cmark (multiple loads/single address) &  Value-based &  {\color{black} same} &    \\
+    \hline
+    AT-RT~\cite{} &  \cmark & block \newline (128 bits)& pipeline/PRF & \cmark (multiple loads/multiple addresses) &  Address-based & {\color{green} fewer} &    \\
+    \hline
+
+    
+    \hline
+  \end{tabular}
+  \caption{Comparison of }
+  \label{table:formatting}
+\end{table*}
+\end{scriptsize}
 
 
 
