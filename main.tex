@@ -93,7 +93,7 @@ Our technique shows an improvement of xx\% bla bla bla.
 %\begin{table}[h!]
 \begin{table*}[h!]
   \centering
-  \begin{tabular}{|c|p{20mm}|p{20mm}|p{20mm}|p{20mm}|p{20mm}|p{20mm}|p{20mm}|}
+  \begin{tabular}{|c|p{10mm}|p{20mm}|p{20mm}|p{20mm}|p{20mm}|p{20mm}|p{20mm}|}
     \hline
     \textbf{Strategies} & 
     \textbf{Prefetch} & 
@@ -106,13 +106,13 @@ Our technique shows an improvement of xx\% bla bla bla.
     \hline
     
     \hline
-    DLVP~\cite{} &  \cmark & accessed \newline item  (word) & pipeline & \xmark &  Value-based &  {\color{red} more} &    \\
+    DLVP~\cite{} &  \cmark & accessed \newline item  (word) & pipeline & \xmark &  {\color{red} Value-based} &  {\color{red} more} &    \\
     \hline
-    AVPP~\cite{} &  \cmark & block \newline (128 bits) & scratchpad \newline (L0)  & \xmark & Value-based &  {\color{red} more} &   \\
+    AVPP~\cite{} &  \cmark & block \newline (128 bits) & scratchpad \newline (L0)  & \xmark & {\color{red} Value-based} &  {\color{red} more} &   \\
     \hline
-    ISRB~\cite{} &  \xmark & -- & -- & \cmark (multiple loads/single address) &  Value-based &  {\color{black} same} &    \\
+    ISRB~\cite{} &  \xmark & -- & -- & \cmark (multiple loads/single address) & {\color{red} Value-based} &  {\color{black} same} &    \\
     \hline
-    AT-RT~\cite{} &  \cmark & block \newline (128 bits)& pipeline/PRF & \cmark (multiple loads/multiple addresses) &  Address-based & {\color{green} fewer} &    \\
+    AT-RT~\cite{} &  \cmark & block \newline (128 bits)& pipeline/PRF & \cmark (multiple loads/multiple addresses) &  {\color{green} Address-based} & {\color{green} fewer} &    \\
     \hline
 
     
