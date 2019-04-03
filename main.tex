@@ -123,11 +123,11 @@ Our technique shows an improvement of xx\% bla bla bla.
     \hline
     DLVP~\cite{} &  \cmark & {\color{orange}accessed \newline item (e.g., word)} & pipeline & \xmark &  {\color{red} Value-based} &  {\color{red} more} &    \\
     \hline
-    AVPP~\cite{} &  \cmark & {\color{green}block} \newline (e.g., 128 bits) & scratchpad \newline (L0)  & \xmark & {\color{red} Value-based} &  {\color{red} more} &   \\
+    AVPP~\cite{} &  \cmark & {\color{ForestGreen}block} \newline (e.g., 128 bits) & scratchpad \newline (L0)  & \xmark & {\color{red} Value-based} &  {\color{red} more} &   \\
     \hline
-    ISRB~\cite{} &  \xmark & -- & -- & \cmark ({\color{orange}single address} / {\color{green}multiple loads}) & {\color{red} Value-based} &  {\color{black} same} &    \\
+    ISRB~\cite{} &  \xmark & -- & -- & \cmark ({\color{orange}single address} / {\color{ForestGreen}multiple loads}) & {\color{red} Value-based} &  {\color{black} same} &    \\
     \hline
-    AT-RT~\cite{} &  \cmark & {\color{green}block} \newline (e.g., 128 bits)& pipeline/PRF & \cmark ({\color{green}multiple addresses} / {\color{green}multiple loads}) &  {\color{green} Address-based} & {\color{green} fewer} &    \\
+    AT-RT~\cite{} &  \cmark & {\color{ForestGreen}block} \newline (e.g., 128 bits)& pipeline/PRF & \cmark ({\color{ForestGreen}multiple addresses} / {\color{ForestGreen}multiple loads}) &  {\color{ForestGreen} Address-based} & {\color{ForestGreen} fewer} &    \\
     \hline
 
     
@@ -282,13 +282,21 @@ There are two types of predictions being made in this forwarding strategy: (1) t
 
 Validating the memory ordering is a bit more difficult and needs to be separated into two different types, external and internal. External ones comes in the form of memory coherence invalidation requests. Although complex to solve, this type of ordering violations are present in any multi-core micro-architecture as well and as such, the CPU must already have mechanism to detect the violating loads~\cite{}, rollback the values of the shared registers~\cite{} and replay the infringing instruction chains~\cite{}. The only extra step introduced by our mechanism is that the register reuse table also needs to be accessed to invalidate the entry for that address. Since the table is directed mapped and indexed by addresses, this is a fast access to zero the valid bit. Is also relevant to mention that this negative coherence interaction can be completely avoided by delaying coherence requests in L1 without any loss of performance~\cite{}.
 
-In order to deal with internal memory ordering problems, it is required for our mechanism to interact with the memory dependency predictor. While our solution is independent of the memory dependency predictor used, we still need to chose one for modeling. We chose the one proposed bu A. Roth~\cite{} since it minimises redundant accesses accesses to L1 to validate memory ordering by filtering loads that are not in a \textit{store venerability window} (SVW). This mechanism relies on \textit{store sequence numbers} (SseqN) to detect if a load is in the venerability window of a store and only loads that are in the venerability windows need to be replayed. This strategy can be naturally extended to any register reuse mechanism, by having loads inheriting the SseqN of their forwarded loads and thus inheriting their venerability window as well. %This has implications on the memory bypassing predictor which we will discuss next. 
+In order to deal with internal memory ordering problems, it is required for our mechanism to detect memory ordering violations. While our solution is independent of the memory dependency predictor used, we still need to chose one for modeling. We chose the one proposed by A. Roth~\cite{} since it minimises redundant accesses accesses to L1 to validate memory ordering by filtering loads that are not in a \textit{store venerability window} (SVW). This mechanism relies on \textit{store sequence numbers} (SseqN) to detect if a load is in the venerability window of a store and only loads that are in the venerability windows need to be replayed. This strategy can be naturally extended to any register reuse mechanism, by having loads inheriting the SseqN of their forwarded loads and thus inheriting their venerability window as well. %This has implications on the memory bypassing predictor which we will discuss next. 
 Again, this is a requirement for any load-to-load forwarding technique, not just the register file based one proposed in this paper. The extra step introduced by our technique is for the register reuse table to be updated accordingly. When a store instruction is at the commit stage, it also needs to index the register reuse table and invalidate the corresponding entry so that the following load that match that same address do not forward the stale data from older loads.
 
 
 
 \subsection{Interaction with the memory bypass predictor}
-Both the standalone address based predictor and any load-to-load forwarding techniques need to be informed by speculative memory bypassing (SMB) predictor. Even if there is no correctness issue due to incorrect scheduling, mispeculations can still have a profound impact in performance~\cite{}, requiring the pipeline to be flushed and instruction dependency chains to be replayed. For our solution we use the same load store conflict detector (LSCD) strategy as DLVP~\cite{} to enable or disable forwarding for particular loads before rename. Perais at al.~\cite{} goes one step further and breaks memory dependencies by identifying the producer of a load and renaming the destination register of the load as the source register of the producing store. This effectively allows for load-to-store forwarding through the register file but we do not consider those in this work.  
+Both the standalone address based predictor and any load-to-load forwarding techniques need to be informed by speculative memory bypassing (SMB) predictor. Even if there is no correctness issue due to incorrect scheduling, mispeculations can still have a profound impact in performance~\cite{}, requiring the pipeline to be flushed and instruction dependency chains to be replayed. For our solution we use the same \textit{Load Store Conflict Detector} (LSCD) strategy as DLVP~\cite{} to enable or disable forwarding for particular loads before rename. Perais at al.~\cite{} goes one step further and breaks memory dependencies by identifying the producer of a load and renaming the destination register of the load as the source register of the producing store. This effectively allows for load-to-store forwarding through the register file but we do not consider those in this work.  
+
+
+\begin{figure}[ht]
+\centerline{\includegraphics[width=0.50\textwidth]{diagrams/LSCD.pdf}}
+\caption{Example of how forwarding can create a memory ordering violation independent of the issue order. LSCD learns the memory violation and breaks the erroneous 3rd to 4th load-load forwarding by forcing the 4th load make a new entry in the Register Reuse Table.}
+\label{fig:LSCD}
+\end{figure}
+
 
 
 \subsection{Address prediction}
